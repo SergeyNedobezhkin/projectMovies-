@@ -4,8 +4,8 @@ const API_URL_POPULAR =
   "https://kinopoiskapiunofficial.tech/api/v2.2/films/top?type=TOP_100_POPULAR_FILMS&page=1";
 const API_URL_SEARCH =
   "https://kinopoiskapiunofficial.tech/api/v2.1/films/search-by-keyword?keyword=";
-
-getMovies(API_URL_POPULAR);
+const form = document.querySelector("form");
+const search = document.querySelector(".header__search");
 
 async function getMovies(url) {
   const resp = await fetch(url, {
@@ -30,8 +30,7 @@ function getClassByRate(vote) {
 
 function showMovies(data) {
   const moviesEl = document.querySelector(".movies");
-
-  // Очищаем предыдущие фильмы
+  // Очистка уже существующих фильмов до фильтрации
   document.querySelector(".movies").innerHTML = "";
 
   data.films.forEach((movie) => {
@@ -50,23 +49,13 @@ function showMovies(data) {
         <div class="movie__title">${movie.nameRu}</div>
         <div class="movie__category">${movie.genres.map(
           (genre) => ` ${genre.genre}`
-        )}</div>
-        ${
-          movie.rating &&
-          `
-        <div class="movie__average movie__average--${getClassByRate(
-          movie.rating
-        )}">${movie.rating}</div>
-        `
-        }
-      </div>
+        )}
         `;
     moviesEl.appendChild(movieEl);
   });
 }
 
-const form = document.querySelector("form");
-const search = document.querySelector(".header__search");
+getMovies(API_URL_POPULAR);
 
 form.addEventListener("submit", (e) => {
   e.preventDefault();
